@@ -1,0 +1,11 @@
+[package]
+name = "provision"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+async-trait.workspace = true
+host = { path = "../host" }
+kernel = { path = "../kernel" }
+text = { path = "../text" }

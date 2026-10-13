@@ -1,0 +1,12 @@
+base: template:{{image}}
+vmType: vz
+arch: default
+cpus: {{cpus}}
+memory: "{{memory}}"
+disk: "{{disk}}"
+mountType: virtiofs
+mountInotify: true
+{{mounts}}
+containerd:
+  system: false
+  user: false
