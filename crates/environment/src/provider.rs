@@ -7,6 +7,7 @@ use kernel::{EnvironmentError, Shell, ShellEnvironment, ShellName, VmShell, GUES
 use text::Template;
 
 use crate::render::{apply_script, env_script};
+use crate::terminfo;
 
 pub struct HostGuestEnvironment {
     layout: HostLayout,
@@ -54,10 +55,22 @@ impl ShellEnvironment for HostGuestEnvironment {
         let env = self.template("env.sh")?;
         self.write_script(self.layout.env_script(name), env_script(&env, shell))?;
 
+        let terminfo = terminfo::current();
+        let path = self.layout.terminfo_source(name);
+        match &terminfo {
+            Some(entry) => std::fs::write(&path, &entry.source).map_err(internal)?,
+            None if path.exists() => std::fs::remove_file(&path).map_err(internal)?,
+            None => {}
+        }
+        let term = terminfo
+            .as_ref()
+            .map(|entry| entry.name.as_str())
+            .unwrap_or_default();
+
         let apply = self.template("apply.sh")?;
         self.write_script(
             self.layout.apply_script(name),
-            apply_script(&apply, self.browser_port),
+            apply_script(&apply, self.browser_port, term),
         )?;
         Ok(())
     }

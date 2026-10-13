@@ -12,6 +12,12 @@ if [ -d "$SRC/home" ]; then
   cp -a "$SRC/home/." "$HOME/"
 fi
 
+if [ -n "{{term}}" ] && [ -f "$SRC/terminfo" ] && command -v tic >/dev/null 2>&1; then
+  if ! infocmp "{{term}}" >/dev/null 2>&1; then
+    tic -x "$SRC/terminfo" >/dev/null 2>&1 || true
+  fi
+fi
+
 for rc in "$HOME/.bashrc" "$HOME/.profile" "$HOME/.zshrc"; do
   touch "$rc"
   if ! grep -q "shell-manager" "$rc" 2>/dev/null; then

@@ -67,6 +67,9 @@ templates/         # plantillas de texto (lima.yaml, env.sh, apply.sh, bootstrap
   guest reenvía las URLs al navegador del host por un túnel SSH inverso que vive
   mientras dure la sesión, así `gh auth login` y compañía abren el navegador de
   macOS.
+- El **terminfo** del terminal del host se copia al guest en cada `enter`
+  (`infocmp` en el host → `tic` en el guest), para que la edición de línea y
+  `clear` funcionen con terminales como kitty o alacritty.
 - Las **plantillas** de texto viven en `templates/` (raíz del repo); el binario
   las **copia** a `~/.local/share/shell/templates/` al arrancar y renderiza desde
   ahí (ruta de origen configurable con `SHELL_TEMPLATES`).

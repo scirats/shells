@@ -61,6 +61,10 @@ impl HostLayout {
         self.shell_dir(name).join("env.sh")
     }
 
+    pub fn terminfo_source(&self, name: &str) -> PathBuf {
+        self.shell_dir(name).join("terminfo")
+    }
+
     pub fn bootstrap_script(&self, name: &str) -> PathBuf {
         self.shell_dir(name).join("bootstrap.sh")
     }

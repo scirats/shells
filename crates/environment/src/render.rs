@@ -5,9 +5,13 @@ pub(crate) fn env_script(template: &Template, shell: &Shell) -> String {
     template.render(&[("name", shell.name.as_str())])
 }
 
-pub(crate) fn apply_script(template: &Template, browser_port: u16) -> String {
+pub(crate) fn apply_script(template: &Template, browser_port: u16, term: &str) -> String {
     let port = browser_port.to_string();
-    template.render(&[("source", GUEST_STAGE_DIR), ("browser_port", &port)])
+    template.render(&[
+        ("source", GUEST_STAGE_DIR),
+        ("browser_port", &port),
+        ("term", term),
+    ])
 }
 
 #[cfg(test)]
@@ -34,10 +38,11 @@ mod tests {
     }
 
     #[test]
-    fn apply_script_embeds_the_stage_source_and_browser_port() {
-        let out = apply_script(&Template::new(APPLY), BROWSER_PORT);
+    fn apply_script_embeds_the_stage_source_browser_port_and_term() {
+        let out = apply_script(&Template::new(APPLY), BROWSER_PORT, "xterm-kitty");
         assert!(out.contains("SRC=\"/tmp/shell\""));
         assert!(out.contains(&format!("127.0.0.1:{BROWSER_PORT}/open")));
+        assert!(out.contains("infocmp \"xterm-kitty\""));
         assert!(!out.contains("{{"));
     }
 }
