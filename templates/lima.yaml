@@ -5,7 +5,7 @@ cpus: {{cpus}}
 memory: "{{memory}}"
 disk: "{{disk}}"
 mountType: virtiofs
-mountInotify: true
+mountInotify: false
 {{mounts}}
 containerd:
   system: false

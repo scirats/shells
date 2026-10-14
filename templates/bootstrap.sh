@@ -7,7 +7,10 @@ sed -i "s/lima-{{name}}/{{name}}/g" /etc/hosts || true
 export DEBIAN_FRONTEND=noninteractive
 if command -v apt-get >/dev/null 2>&1; then
   apt-get update -y
-  apt-get install -y --no-install-recommends {{packages}}
+  apt-get install -y --no-install-recommends {{packages}} snapd
+  systemctl enable --now snapd.socket
+  snap wait system seed.loaded
+  snap install helix --classic
 elif command -v apk >/dev/null 2>&1; then
   apk add --no-cache {{packages}}
 elif command -v dnf >/dev/null 2>&1; then

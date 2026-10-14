@@ -60,6 +60,13 @@ templates/         # plantillas de texto (lima.yaml, env.sh, apply.sh, bootstrap
   materializados al home del guest en cada `enter`.
 - El guest **solo** ve la carpeta montada, en `~/Workspace`; el home del host no se
   monta (se desactiva el mount por defecto de Lima) y `enter` arranca ahí.
+- El mount usa **virtiofs** con `mountInotify` **desactivado**: la opción
+  `mountInotify` de Lima rompe `mkdir`/`chmod` concurrentes sobre el share
+  (EACCES intermitente) y hace fallar `npm install`. Ver
+  [lima#2450](https://github.com/lima-vm/lima/issues/2450). Como contrapartida,
+  los `inotify` del guest no ven cambios hechos en el host.
+- El bootstrap instala **snapd** y **helix** (`snap install helix --classic`) y el
+  entorno del guest exporta `EDITOR=hx`.
 - El shell de login del guest es **zsh**: se instala como paquete y cada `enter`
   lo fija con `chsh`. Como `limactl shell` usa el `user.shell` de Lima (no
   `/etc/passwd`), `enter` le pasa `--shell` con el shell de login del guest.
