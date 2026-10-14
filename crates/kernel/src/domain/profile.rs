@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
-pub const REQUIRED_PACKAGES: &[&str] = &["curl", "ca-certificates", "git", "rsync", "zsh"];
+pub const REQUIRED_PACKAGES: &[&str] =
+    &["curl", "ca-certificates", "git", "rsync", "zsh", "neovim"];
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(default)]
